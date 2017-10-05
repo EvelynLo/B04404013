@@ -1,0 +1,57 @@
+---
+
+
+
+##探討心血管疾病與糖尿病之關係
+
+---
+因心血管疾病的死亡的人數(圖一):台灣於1994年實施全民健保，2000年被保人涵蓋率達96%，對於病人就醫幫忙很大，間接對於心血管診療的發展有貢獻，但由於近年來國人的飲食習慣，導致心血管死亡人數的上升
+因糖尿病而死亡的人數(圖二):由於國人的飲食習慣，加上台灣國人平均壽命的延長，導致因糖尿病而死亡人數有上升的趨勢
+```{r}
+library(dplyr)
+data = read.csv("Death.csv", header = T, sep = ",")
+data$Year = factor(data$Year)
+heartwithyear = select(data, Year, Heart.Disease)
+plot(heartwithyear)
+diabetewithyear = select(data, Year, Diabetes)
+plot(diabetewithyear)
+```
+
+##進一步確認此兩種疾病佔所有死亡人數的比例變化
+因心血管疾病的死亡的人數比例(圖一):可以看出，在1992年以前，占死亡人數的總比例都比之後的年度高出許多，但大致還是跟其死亡人數趨勢相同
+因糖尿病而死亡的人數比例(圖二):大致與其死亡人數的趨勢相同
+
+```{r}
+data = read.csv("Death.csv", header = T, sep = ",")
+data$Year = factor(data$Year)
+data$Heart.Disease.rate = data$Heart.Disease/data$Death
+data$Diabetes.rate = data$Diabetes/data$Death
+heartratewithyear = select(data, Year, Heart.Disease.rate)
+plot(heartratewithyear)
+diabeteratewithyear = select(data, Year, Diabetes.rate)
+plot(diabeteratewithyear)
+```
+
+##探討心血管疾病死亡人數與糖尿病死亡人數的關係
+大致呈現正比的關係:
+1.糖尿病較易發生動脈硬化
+2.糖尿病患者常合併有高血壓，第1型糖尿病有25%合併高血壓，第2型糖尿病則有超過50%
+3.。嚴格控制血糖在第1型糖尿病可減少顯微血管併發症與心血管疾病；在第2型糖尿病嚴格血糖控制可減少顯微血管併發症，但是否能減少心血管疾病尚不確定
+```{r}
+data = read.csv("Death.csv", header = T, sep = ",")
+data$Year = factor(data$Year)
+fatdata = select(data, Heart.Disease, Diabetes)
+plot(fatdata)
+```
+
+##探討心血管疾病占死亡比例與糖尿病死亡占死亡比例之關係
+兩者成反比:
+由於糖尿病患者有很大的機率會併發心血管疾病，可以知道糖尿病與心血管疾病的患者有很大的比例會重複，而這些病患可能死於心血管疾病或者糖尿病，故因心血管疾病死亡的人數比例上升，因糖尿病死亡的人數比例就會下降
+```{r}
+data = read.csv("Death.csv", header = T, sep = ",")
+data$Year = factor(data$Year)
+data$Heart.Disease.rate = data$Heart.Disease/data$Death
+data$Diabetes.rate = data$Diabetes/data$Death
+fatratedata = select(data, Heart.Disease.rate, Diabetes.rate)
+plot(fatratedata)
+```
