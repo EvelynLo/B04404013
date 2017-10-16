@@ -1,0 +1,30 @@
+---
+
+##糖尿病在台灣的發展狀況與改善探討
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+本學期關注議題:
+糖尿病在台灣的控制情況
+包括各種併發症與糖尿病之間的趨勢變化
+並比較醫生用藥情況，血糖機盛行率等資料
+再比較不同年齡層的併發症情況
+
+最終找出台灣控制糖尿病方面需改進的部分
+
+資料來源:
+
+政府資訊開放平台:
+
+https://data.gov.tw/datasets/search?qs=tid%3A291&order=downloadcount&type=dataset
+
+血糖機銷售分布:
+
+http://www.topology.com.tw/DataContent/report/%E4%BE%B5%E5%85%A5%E5%BC%8F%E8%88%87%E9%9D%9E%E4%BE%B5%E5%85%A5%E5%BC%8F%E8%A1%80%E7%B3%96%E6%A9%9F%E5%B8%82%E5%A0%B4%E5%88%86%E6%9E%90/14071
+
+
+
+
