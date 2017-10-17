@@ -1,0 +1,99 @@
+---
+
+
+
+##探討心血管疾病與糖尿病之關係
+
+醫技三 B04404013 吳嘉峻
+
+---
+
+
+因心血管疾病的死亡的人數(圖一):台灣於1994年實施全民健保，2000年被保人涵蓋率達96%，對於病人就醫幫忙很大，間接對於心血管診療的發展有貢獻，但由於近年來國人的飲食習慣，導致心血管死亡人數的上升
+因糖尿病而死亡的人數(圖二):由於國人的飲食習慣，加上台灣國人平均壽命的延長，導致因糖尿病而死亡人數有上升的趨勢
+```{r, echo=FALSE}
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) { 
+  library(grid) 
+ 
+  # Make a list from the ... arguments and plotlist 
+  plots <- c(list(...), plotlist) 
+ 
+  numPlots = length(plots) 
+ 
+  # If layout is NULL, then use 'cols' to determine layout 
+  if (is.null(layout)) { 
+    # Make the panel 
+    # ncol: Number of columns of plots 
+    # nrow: Number of rows needed, calculated from # of cols 
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)), 
+                    ncol = cols, nrow = ceiling(numPlots/cols)) 
+  } 
+ 
+ if (numPlots==1) { 
+    print(plots[[1]]) 
+ 
+  } else { 
+    # Set up the page 
+    grid.newpage() 
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout)))) 
+ 
+    # Make each plot, in the correct location 
+    for (i in 1:numPlots) { 
+      # Get the i,j matrix positions of the regions that contain this subplot 
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE)) 
+ 
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row, 
+                                      layout.pos.col = matchidx$col)) 
+    } 
+  } 
+} 
+library(dplyr)
+library(ggplot2)
+data = read.csv("Death.csv", header = T, sep = ",")
+data$Year = factor(data$Year)
+data$Heart.Disease = data$Heart.Disease
+data$Diabetes = data$Diabetes
+p3=qplot(Year,Heart.Disease,data = data,ylab = "death toll of heart.disease",group = 1)+geom_line()+ggtitle("圖一")
+p4=qplot(Year,Diabetes, data = data,ylab = "death toll of Diabetes",group = 1)+geom_line()+ggtitle("圖二")
+multiplot(p3,p4)
+```
+
+##進一步確認此兩種疾病佔所有死亡人數的比例變化
+因心血管疾病的死亡的人數比例(圖三):可以看出，在1992年以前，占死亡人數的總比例都比之後的年度高出許多，但大致還是跟其死亡人數趨勢相同
+因糖尿病而死亡的人數比例(圖四):大致與其死亡人數的趨勢相同
+
+```{r, echo=FALSE}
+data = read.csv("Death.csv", header = T, sep = ",")
+data$Year = factor(data$Year)
+data$Heart.Disease.rate = data$Heart.Disease/data$Death
+data$Diabetes.rate = data$Diabetes/data$Death
+p1=qplot(Year,Heart.Disease.rate,data = data,group = 1,ylab ="mortality rate of heart.disease")+geom_line()+ggtitle("圖三")
+p2=qplot(Year,Diabetes.rate,data = data,group = 1,ylab ="mortality rate of diabete")+geom_line()+ggtitle("圖四")
+multiplot(p1,p2)
+```
+
+##探討心血管疾病死亡人數與糖尿病死亡人數的關係
+大致呈現正比的關係:
+1.糖尿病較易發生動脈硬化
+2.糖尿病患者常合併有高血壓，第1型糖尿病有25%合併高血壓，第2型糖尿病則有超過50%
+3.。嚴格控制血糖在第1型糖尿病可減少顯微血管併發症與心血管疾病；在第2型糖尿病嚴格血糖控制可減少顯微血管併發症，但是否能減少心血管疾病尚不確定
+```{r, echo=FALSE}
+data = read.csv("Death.csv", header = T, sep = ",")
+data$Year = factor(data$Year)
+fatdata = select(data, Heart.Disease, Diabetes)
+qplot(Heart.Disease, Diabetes, data = data)+scale_x_continuous(limit =c(3000,16000))+scale_y_continuous(limit = c(3000,16000))
+```
+
+##探討心血管疾病占死亡比例與糖尿病死亡占死亡比例之關係
+兩者成反比:
+由於糖尿病患者有很大的機率會併發心血管疾病，可以知道糖尿病與心血管疾病的患者有很大的比例會重複，而這些病患可能死於心血管疾病或者糖尿病，故因心血管疾病死亡的人數比例上升，因糖尿病死亡的人數比例就會下降
+```{r, echo=FALSE}
+data = read.csv("Death.csv", header = T, sep = ",")
+data$Year = factor(data$Year)
+data$Heart.Disease.rate = data$Heart.Disease/data$Death
+data$Diabetes.rate = data$Diabetes/data$Death
+qplot(Diabetes.rate,data = data,Heart.Disease.rate)+geom_smooth()+ geom_point(aes(colour = Year))+scale_x_continuous(limit = c(0.03,0.12))+scale_y_continuous(limit = c(0.03,0.12))
+data$logheart = log(data$Heart.Disease.rate)
+data$logdiabetes = log(data$Diabetes.rate)
+qplot(logdiabetes,logheart,data = data) + geom_point(aes(colour = Year))
+```

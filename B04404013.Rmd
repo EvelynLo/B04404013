@@ -2,8 +2,14 @@
 
 
 ##糖尿病在台灣的發展狀況與改善探討
----
 
+醫技三 B04404013吳嘉峻
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r echo=FALSE}
+```
 
 
 
